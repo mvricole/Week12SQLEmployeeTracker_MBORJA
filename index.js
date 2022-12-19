@@ -172,7 +172,7 @@ function viewEmployeesByManager() {
   db.findAllEmployees()
     .then(([rows]) => {
       let managers = rows;
-      const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+      const managerOptions = managers.map(({ id, first_name, last_name }) => ({
         name: `${first_name} ${last_name}`,
         value: id
       }));
@@ -182,7 +182,7 @@ function viewEmployeesByManager() {
           type: "list",
           name: "managerId",
           message: "Which employee do you want to see direct reports for?",
-          choices: managerChoices
+          choices: managerOptions
         }
       ])
         .then(res => db.findAllEmployeesByManager(res.managerId))
@@ -204,7 +204,7 @@ function removeEmployee() {
   db.findAllEmployees()
     .then(([rows]) => {
       let employees = rows;
-      const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+      const employeeOptions = employees.map(({ id, first_name, last_name }) => ({
         name: `${first_name} ${last_name}`,
         value: id
       }));
@@ -214,7 +214,7 @@ function removeEmployee() {
           type: "list",
           name: "employeeId",
           message: "Which employee do you want to remove?",
-          choices: employeeChoices
+          choices: employeeOptions
         }
       ])
         .then(res => db.removeEmployee(res.employeeId))
@@ -228,7 +228,7 @@ function updateEmployeeRole() {
   db.findAllEmployees()
     .then(([rows]) => {
       let employees = rows;
-      const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+      const employeeOptions = employees.map(({ id, first_name, last_name }) => ({
         name: `${first_name} ${last_name}`,
         value: id
       }));
@@ -238,7 +238,7 @@ function updateEmployeeRole() {
           type: "list",
           name: "employeeId",
           message: "Which employee's role do you want to update?",
-          choices: employeeChoices
+          choices: employeeOptions
         }
       ])
         .then(res => {
@@ -272,7 +272,7 @@ function updateEmployeeManager() {
   db.findAllEmployees()
     .then(([rows]) => {
       let employees = rows;
-      const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+      const employeeOptions = employees.map(({ id, first_name, last_name }) => ({
         name: `${first_name} ${last_name}`,
         value: id
       }));
@@ -282,7 +282,7 @@ function updateEmployeeManager() {
           type: "list",
           name: "employeeId",
           message: "Which employee's manager do you want to update?",
-          choices: employeeChoices
+          choices: employeeOptions
         }
       ])
         .then(res => {
@@ -290,7 +290,7 @@ function updateEmployeeManager() {
           db.findAllPossibleManagers(employeeId)
             .then(([rows]) => {
               let managers = rows;
-              const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+              const managerOptions = managers.map(({ id, first_name, last_name }) => ({
                 name: `${first_name} ${last_name}`,
                 value: id
               }));
@@ -301,7 +301,7 @@ function updateEmployeeManager() {
                   name: "managerId",
                   message:
                     "Which employee do you want to set as manager for the selected employee?",
-                  choices: managerChoices
+                  choices: managerOptions
                 }
               ])
                 .then(res => db.updateEmployeeManager(employeeId, res.managerId))
@@ -423,7 +423,7 @@ function removeDepartment() {
         type: "list",
         name: "departmentId",
         message:
-          "Which department would you like to remove? (Warning: This will also remove associated roles and employees)",
+          "Which department would you like to remove?",
         choices: departmentChoices
       })
         .then(res => db.removeDepartment(res.departmentId))
